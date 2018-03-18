@@ -1,0 +1,19 @@
+{
+  "name": "random-irregular-polygon",
+  "version": "1.0.0",
+  "description": "JS Library for Generating Random Irregular Polygon",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kelvinau/Random-Irregular-Polygon.git"
+  },
+  "author": {
+      "name": "Kelvin Au",
+      "url": "https://github.com/kelvinau"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kelvinau/Random-Irregular-Polygon/issues"
+  },
+  "homepage": "https://github.com/kelvinau/Random-Irregular-Polygon#readme"
+}
