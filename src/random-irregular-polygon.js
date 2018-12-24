@@ -10,8 +10,8 @@ class RIP {
         this.minCoordVal = opts.minCoordVal;
         this.maxCoordVal = opts.maxCoordVal;
         this.isIntCoord = !!opts.isIntCoord;
-    }  
-    
+    }
+
     getPolygonCoord() {
         return this.space_partition(this.getRandomPoints());
     }
@@ -45,7 +45,7 @@ class RIP {
         let secondPoint = points[secondIndex];
         this.swapPoints(points, 1, secondIndex);
         //console.log(points);
-        
+
         let i = 2;
         let j = this.numOfPoints - 1;
         while (i <= j) {
@@ -109,12 +109,12 @@ class RIP {
         //console.log(start, end ,point);
         return (end.x - start.x) * (point.y - start.y) - (end.y - start.y) * (point.x - start.x) <= 0;
     }
-    
+
     getRandomPointOnSegment(start, end) {
         let randomRatio = Math.random();
         return new Point(
-            start.x + (end.x - start.x) * randomRatio, 
+            start.x + (end.x - start.x) * randomRatio,
             start.y + (end.y - start.y) * randomRatio
         );
     }
-} 
+}
