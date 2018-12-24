@@ -14,7 +14,6 @@
   </head>
   <body>
     <div id="root"></div>
-
     <script src="../src/random-irregular-polygon.js"></script>
     <script src="../lib/react.development.js"></script>
     <script src="../lib/react-dom.development.js"></script>
@@ -104,10 +103,15 @@
             .enter()
             .append('line')
             .merge(lines)
-            .transition()
-            .duration(2000)
             .attr('x1', d => xScale(d.x1))
             .attr('y1', d => yScale(d.y1))
+            .attr('x2', d => xScale(d.x1))
+            .attr('y2', d => yScale(d.y1))
+            .transition()
+            .delay(function(d, i) {
+              return (i + 1) * 500;
+            })
+            .duration(2000)
             .attr('x2', d => xScale(d.x2))
             .attr('y2', d => yScale(d.y2))
             .style('stroke', 'silver');
