@@ -129,14 +129,7 @@
             .attr('y2', d => yScale(d.y2))
             .style('stroke', 'silver');
 
-          lines
-            .exit()
-            // .transition()
-            // .duration(2000)
-            // .attr('cx', CENTER_X)
-            // .attr('cy', CENTER_Y)
-            // .attr('r', d => 0)
-            .remove();
+          lines.exit().remove();
 
           // dots
           const dots = d3
