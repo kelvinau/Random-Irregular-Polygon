@@ -75,14 +75,15 @@
             dotData,
             lineData,
           };
+          this.svgEl = React.createRef();
           this.clickHandler = this.clickHandler.bind(this);
         }
         updateChart() {
-          const MAX_WIDTH = this.svgEl.width.baseVal.value - CIRCLE_RADIUS;
-          const MAX_HEIGHT = this.svgEl.height.baseVal.value - CIRCLE_RADIUS;
+          const MAX_WIDTH = this.svgEl.current.width.baseVal.value - CIRCLE_RADIUS;
+          const MAX_HEIGHT = this.svgEl.current.height.baseVal.value - CIRCLE_RADIUS;
 
-          const CENTER_X = this.svgEl.width.baseVal.value / 2;
-          const CENTER_Y = this.svgEl.height.baseVal.value / 2;
+          const CENTER_X = this.svgEl.current.width.baseVal.value / 2;
+          const CENTER_Y = this.svgEl.current.height.baseVal.value / 2;
 
           const xScale = d3
             .scaleLinear()
@@ -108,7 +109,7 @@
 
           // dots
           const dots = d3
-            .select(this.svgEl)
+            .select(this.svgEl.current)
             .selectAll('circle')
             .data(this.state.dotData);
 
@@ -138,12 +139,12 @@
             .remove();
 
           // lines
-          d3.select(this.svgEl)
+          d3.select(this.svgEl.current)
             .selectAll('line')
             .remove();
 
           const lines = d3
-            .select(this.svgEl)
+            .select(this.svgEl.current)
             .selectAll('line')
             .data(this.state.lineData);
 
@@ -179,7 +180,7 @@
               <div className="generate-btn">
                 <button onClick={this.clickHandler}>Generate Chart</button>
               </div>
-              <svg width="100%" height="100%" ref={el => (this.svgEl = el)} />
+              <svg width="100%" height="100%" ref={this.svgEl} />
             </div>
           );
         }
