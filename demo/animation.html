@@ -24,6 +24,7 @@
       const MIN_COORD_VAL = 20;
       const MAX_COORD_VAL = 100;
       const CIRCLE_RADIUS = 10;
+      const LINE_DURATION = 500;
 
       function getData() {
         const generator = new RIP({
@@ -38,7 +39,7 @@
           return {
             x,
             y,
-            colour: i % 5,
+            color: i % 5,
           };
         });
 
@@ -64,7 +65,7 @@
           lineData,
         };
       }
-      let colours = ['#2176ae', '#57b8ff', '#b66d0d', '#fbb13c', '#fe6847'];
+      const COLORS = ['#2176ae', '#57b8ff', '#b66d0d', '#fbb13c', '#fe6847'];
       class App extends React.Component {
         constructor(props) {
           super(props);
@@ -99,6 +100,17 @@
             .selectAll('line')
             .data(this.state.lineData);
 
+          const waitTime = [];
+          this.state.lineData.reduce((totalWaitTime, d) => {
+            // distance / time
+            const speed =
+              Math.sqrt(Math.pow(d.x2 - d.x1, 2) + Math.pow(d.y2 - d.y1, 2)) /
+              LINE_DURATION;
+
+            totalWaitTime += speed * 1000;
+            waitTime.push(totalWaitTime);
+            return totalWaitTime;
+          }, 2000);
           lines
             .enter()
             .append('line')
@@ -109,9 +121,9 @@
             .attr('y2', d => yScale(d.y1))
             .transition()
             .delay(function(d, i) {
-              return (i + 1) * 500;
+              return waitTime[i];
             })
-            .duration(2000)
+            .duration(LINE_DURATION)
             .attr('x2', d => xScale(d.x2))
             .attr('y2', d => yScale(d.y2))
             .style('stroke', 'silver');
@@ -143,7 +155,7 @@
             .attr('cx', d => xScale(d.x))
             .attr('cy', d => yScale(d.y))
             .attr('r', d => CIRCLE_RADIUS)
-            .style('fill', d => colours[d.colour]);
+            .style('fill', d => COLORS[d.color]);
 
           dots
             .exit()
