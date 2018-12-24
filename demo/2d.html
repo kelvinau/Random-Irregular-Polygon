@@ -1,27 +1,32 @@
 <html>
-    <head>
-        <script src="../src/random-irregular-polygon.js"></script>
-    </head>
-    <body>
-        <canvas id="polygon"></canvas>
-        <script>
-            gen = new RIP({
-                numOfPoints: 10,
-                minCoordVal: 20,
-                maxCoordVal: 100,
-            });
-            let points = gen.getPolygonCoord();            
-            
-            var ctx = document.getElementById('polygon').getContext('2d');
-            ctx.fillStyle = '#f00';
-            ctx.beginPath();
-            
-            ctx.moveTo(points[0].x, points[1].y);
-            for (let i = 1; i < points.length; i++) {
-                ctx.lineTo(points[i].x, points[i].y);
-            }
-            ctx.closePath();
-            ctx.fill();
-        </script>
-    </body>
+  <head>
+    <script src="../src/random-irregular-polygon.js"></script>
+    <style>
+      body {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="polygon" width="800" height="600"></canvas>
+    <script>
+      gen = new RIP({
+        numOfPoints: 10,
+        minCoordVal: 100,
+        maxCoordVal: 500,
+      });
+      let points = gen.getPolygonCoord();
+
+      var ctx = document.getElementById('polygon').getContext('2d');
+      ctx.fillStyle = '#f00';
+      ctx.beginPath();
+
+      ctx.moveTo(points[0].x, points[1].y);
+      for (let i = 1; i < points.length; i++) {
+        ctx.lineTo(points[i].x, points[i].y);
+      }
+      ctx.closePath();
+      ctx.fill();
+    </script>
+  </body>
 </html>
