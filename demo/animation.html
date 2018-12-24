@@ -78,6 +78,7 @@
           this.clickHandler = this.clickHandler.bind(this);
         }
         updateChart() {
+          console.log(this.state.dotData);
           const MAX_WIDTH = this.svgEl.width.baseVal.value - CIRCLE_RADIUS;
           const MAX_HEIGHT = this.svgEl.height.baseVal.value - CIRCLE_RADIUS;
 
@@ -146,6 +147,8 @@
           dots
             .enter()
             .append('circle')
+            .attr('data-x', d => d.x)
+            .attr('data-y', d => d.y)
             .attr('cx', CENTER_X)
             .attr('cy', CENTER_Y)
             .style('fill', '#fff')
