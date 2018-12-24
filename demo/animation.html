@@ -28,28 +28,52 @@
 
       function getData() {
         const generator = new RIP({
-          numOfPoints: 20 + Math.floor(20 * Math.random()),
+          numOfPoints: 10 + Math.floor(10 * Math.random()),
           minCoordVal: MIN_COORD_VAL,
           maxCoordVal: MAX_COORD_VAL,
         });
 
         const coords = generator.getPolygonCoord();
 
-        return coords.map(({ x, y }, i) => {
+        const dotData = coords.map(({ x, y }, i) => {
           return {
             x,
             y,
             colour: i % 5,
           };
         });
+
+        const lineData = [];
+        for (let i = 1; i < coords.length; i++) {
+          lineData.push({
+            x1: coords[i - 1].x,
+            y1: coords[i - 1].y,
+            x2: coords[i].x,
+            y2: coords[i].y,
+          });
+        }
+        // close the path
+        lineData.push({
+          x1: coords[coords.length - 1].x,
+          y1: coords[coords.length - 1].y,
+          x2: coords[0].x,
+          y2: coords[0].y,
+        });
+
+        return {
+          dotData,
+          lineData,
+        };
       }
       let colours = ['#2176ae', '#57b8ff', '#b66d0d', '#fbb13c', '#fe6847'];
       class App extends React.Component {
         constructor(props) {
           super(props);
 
+          const { dotData, lineData } = getData();
           this.state = {
-            data: getData(),
+            dotData,
+            lineData,
           };
           this.clickHandler = this.clickHandler.bind(this);
         }
@@ -60,26 +84,56 @@
           const CENTER_X = this.svgEl.width.baseVal.value / 2;
           const CENTER_Y = this.svgEl.height.baseVal.value / 2;
 
-          let xScale = d3
+          const xScale = d3
             .scaleLinear()
             .domain([MIN_COORD_VAL, MAX_COORD_VAL])
             .range([CIRCLE_RADIUS, MAX_WIDTH]);
-          let yScale = d3
+
+          const yScale = d3
             .scaleLinear()
             .domain([MIN_COORD_VAL, MAX_COORD_VAL])
             .range([CIRCLE_RADIUS, MAX_HEIGHT]);
 
-          let u = d3
+          // lines
+          const lines = d3
+            .select(this.svgEl)
+            .selectAll('line')
+            .data(this.state.lineData);
+
+          lines
+            .enter()
+            .append('line')
+            .merge(lines)
+            .transition()
+            .duration(2000)
+            .attr('x1', d => xScale(d.x1))
+            .attr('y1', d => yScale(d.y1))
+            .attr('x2', d => xScale(d.x2))
+            .attr('y2', d => yScale(d.y2))
+            .style('stroke', 'silver');
+
+          lines
+            .exit()
+            // .transition()
+            // .duration(2000)
+            // .attr('cx', CENTER_X)
+            // .attr('cy', CENTER_Y)
+            // .attr('r', d => 0)
+            .remove();
+
+          // dots
+          const dots = d3
             .select(this.svgEl)
             .selectAll('circle')
-            .data(this.state.data);
+            .data(this.state.dotData);
 
-          u.enter()
+          dots
+            .enter()
             .append('circle')
             .attr('cx', CENTER_X)
             .attr('cy', CENTER_Y)
             .style('fill', '#fff')
-            .merge(u)
+            .merge(dots)
             .transition()
             .duration(2000)
             .attr('cx', d => xScale(d.x))
@@ -87,7 +141,8 @@
             .attr('r', d => CIRCLE_RADIUS)
             .style('fill', d => colours[d.colour]);
 
-          u.exit()
+          dots
+            .exit()
             .transition()
             .duration(2000)
             .attr('cx', CENTER_X)
@@ -96,8 +151,10 @@
             .remove();
         }
         clickHandler() {
+          const { dotData, lineData } = getData();
           this.setState({
-            data: getData(),
+            dotData,
+            lineData,
           });
         }
         render() {
