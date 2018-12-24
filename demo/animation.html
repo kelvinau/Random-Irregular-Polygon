@@ -1,0 +1,125 @@
+<!-- Animated Random Irregular Polygon -->
+<html>
+  <head>
+    <style>
+      body {
+        margin: 0;
+      }
+      .generate-btn {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script src="../src/random-irregular-polygon.js"></script>
+    <script src="../lib/react.development.js"></script>
+    <script src="../lib/react-dom.development.js"></script>
+    <script src="../lib/babel.min.js"></script>
+    <script src="../lib/d3.v5.min.js"></script>
+    <script type="text/babel">
+      const NUM_OF_POINTS = 10;
+      const MIN_COORD_VAL = 20;
+      const MAX_COORD_VAL = 100;
+      const CIRCLE_RADIUS = 10;
+
+      function getData() {
+        const generator = new RIP({
+          numOfPoints: 20 + Math.floor(20 * Math.random()),
+          minCoordVal: MIN_COORD_VAL,
+          maxCoordVal: MAX_COORD_VAL,
+        });
+
+        const coords = generator.getPolygonCoord();
+
+        return coords.map(({ x, y }, i) => {
+          return {
+            x,
+            y,
+            colour: i % 5,
+          };
+        });
+      }
+      let colours = ['#2176ae', '#57b8ff', '#b66d0d', '#fbb13c', '#fe6847'];
+      class App extends React.Component {
+        constructor(props) {
+          super(props);
+
+          this.state = {
+            data: getData(),
+          };
+          this.clickHandler = this.clickHandler.bind(this);
+        }
+        updateChart() {
+          const MAX_WIDTH = this.svgEl.width.baseVal.value - CIRCLE_RADIUS;
+          const MAX_HEIGHT = this.svgEl.height.baseVal.value - CIRCLE_RADIUS;
+
+          const CENTER_X = this.svgEl.width.baseVal.value / 2;
+          const CENTER_Y = this.svgEl.height.baseVal.value / 2;
+
+          let xScale = d3
+            .scaleLinear()
+            .domain([MIN_COORD_VAL, MAX_COORD_VAL])
+            .range([CIRCLE_RADIUS, MAX_WIDTH]);
+          let yScale = d3
+            .scaleLinear()
+            .domain([MIN_COORD_VAL, MAX_COORD_VAL])
+            .range([CIRCLE_RADIUS, MAX_HEIGHT]);
+
+          let u = d3
+            .select(this.svgEl)
+            .selectAll('circle')
+            .data(this.state.data);
+
+          u.enter()
+            .append('circle')
+            .attr('cx', CENTER_X)
+            .attr('cy', CENTER_Y)
+            .style('fill', '#fff')
+            .merge(u)
+            .transition()
+            .duration(2000)
+            .attr('cx', d => xScale(d.x))
+            .attr('cy', d => yScale(d.y))
+            .attr('r', d => CIRCLE_RADIUS)
+            .style('fill', d => colours[d.colour]);
+
+          u.exit()
+            .transition()
+            .duration(2000)
+            .attr('cx', CENTER_X)
+            .attr('cy', CENTER_Y)
+            .attr('r', d => 0)
+            .remove();
+        }
+        clickHandler() {
+          this.setState({
+            data: getData(),
+          });
+        }
+        render() {
+          return (
+            <div>
+              <div className="generate-btn">
+                <button onClick={this.clickHandler}>Generate Chart</button>
+              </div>
+              <svg width="100%" height="100%" ref={el => (this.svgEl = el)} />
+            </div>
+          );
+        }
+        componentDidMount() {
+          console.log('Did Mount');
+          setTimeout(() => this.updateChart(), 1000);
+        }
+        componentDidUpdate() {
+          console.log('Did Update');
+          this.updateChart();
+        }
+      }
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>
