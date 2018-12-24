@@ -95,12 +95,6 @@
             .domain([MIN_COORD_VAL, MAX_COORD_VAL])
             .range([CIRCLE_RADIUS, MAX_HEIGHT]);
 
-          // lines
-          const lines = d3
-            .select(this.svgEl)
-            .selectAll('line')
-            .data(this.state.lineData);
-
           const waitTime = [];
           this.state.lineData.reduce((totalWaitTime, d) => {
             // distance / time
@@ -112,24 +106,6 @@
             waitTime.push(totalWaitTime);
             return totalWaitTime;
           }, 2000);
-          lines
-            .enter()
-            .append('line')
-            .merge(lines)
-            .attr('x1', d => xScale(d.x1))
-            .attr('y1', d => yScale(d.y1))
-            .attr('x2', d => xScale(d.x1))
-            .attr('y2', d => yScale(d.y1))
-            .transition()
-            .delay(function(d, i) {
-              return waitTime[i];
-            })
-            .duration(LINE_DURATION)
-            .attr('x2', d => xScale(d.x2))
-            .attr('y2', d => yScale(d.y2))
-            .style('stroke', 'silver');
-
-          lines.exit().remove();
 
           // dots
           const dots = d3
@@ -161,6 +137,35 @@
             .attr('cy', CENTER_Y)
             .attr('r', d => 0)
             .remove();
+
+          // lines
+          d3.select(this.svgEl)
+            .selectAll('line')
+            .remove();
+
+          const lines = d3
+            .select(this.svgEl)
+            .selectAll('line')
+            .data(this.state.lineData);
+
+          lines
+            .enter()
+            // insert before circle to hide the overlapping line
+            .insert('line', 'circle')
+            .attr('x1', d => xScale(d.x1))
+            .attr('y1', d => yScale(d.y1))
+            .attr('x2', d => xScale(d.x1))
+            .attr('y2', d => yScale(d.y1))
+            .transition()
+            .delay(function(d, i) {
+              return waitTime[i];
+            })
+            .duration(LINE_DURATION)
+            .attr('x2', d => xScale(d.x2))
+            .attr('y2', d => yScale(d.y2))
+            .style('stroke', 'silver');
+
+          lines.exit().remove();
         }
         clickHandler() {
           const { dotData, lineData } = getData();
