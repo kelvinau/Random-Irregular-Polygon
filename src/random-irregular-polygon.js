@@ -13,6 +13,7 @@ class RIP {
     }
 
     getPolygonCoord() {
+
         return this.space_partition(this.getRandomPoints());
     }
 
@@ -71,7 +72,7 @@ class RIP {
         if (r > l + 1) {
             let rp = this.getRandomNum(l + 1, r - l - 1, true);
             let firstPoint = points[l];
-            let secondPoint = r === this.numOfPoints ? points[0]: points[r];
+            let secondPoint = r === this.numOfPoints ? points[0] : points[r];
             let randomStartPoint = this.getRandomPointOnSegment(firstPoint, secondPoint);
             let randomEndPoint = points[rp];
             this.swapPoints(points, l + 1, rp);

@@ -8,6 +8,7 @@
     </style>
   </head>
   <body>
+    <div id="point-text"></div>
     <canvas id="polygon" width="800" height="600"></canvas>
     <script>
       gen = new RIP({
@@ -36,7 +37,7 @@
             points[i].y
         );
       }
-
+      document.getElementById('point-text').innerText = JSON.stringify(points);
     </script>
   </body>
 </html>
