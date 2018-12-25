@@ -11,12 +11,14 @@
     <div id="point-text"></div>
     <canvas id="polygon" width="800" height="600"></canvas>
     <script>
-      gen = new RIP({
-        numOfPoints: 7,
+      const gen = new RIP({
+        numOfPoints: 20,
         minCoordVal: 100,
         maxCoordVal: 500,
       });
-      let points = gen.getPolygonCoord();
+
+      const points = gen.getPolygonCoord();
+
 
       var ctx = document.getElementById('polygon').getContext('2d');
       ctx.beginPath();
