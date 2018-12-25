@@ -11,22 +11,32 @@
     <canvas id="polygon" width="800" height="600"></canvas>
     <script>
       gen = new RIP({
-        numOfPoints: 10,
+        numOfPoints: 7,
         minCoordVal: 100,
         maxCoordVal: 500,
       });
       let points = gen.getPolygonCoord();
 
       var ctx = document.getElementById('polygon').getContext('2d');
-      ctx.fillStyle = '#f00';
       ctx.beginPath();
 
-      ctx.moveTo(points[0].x, points[1].y);
+      ctx.moveTo(points[0].x, points[0].y);
       for (let i = 1; i < points.length; i++) {
         ctx.lineTo(points[i].x, points[i].y);
       }
       ctx.closePath();
+      ctx.fillStyle = 'rgba(255, 0, 0, 0.7)';
       ctx.fill();
+
+      ctx.fillStyle = 'black';
+      for (let i = 0; i < points.length; i++) {
+        ctx.fillText(
+            `(${points[i].x.toFixed(2)}, ${points[i].y.toFixed(2)})`,
+            points[i].x,
+            points[i].y
+        );
+      }
+
     </script>
   </body>
 </html>
