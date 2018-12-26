@@ -51,10 +51,10 @@ class RIP {
         let i = 2;
         let j = this.numOfPoints - 1;
         while (i <= j) {
-            while (i < this.numOfPoints && this.isToLeft(firstPoint, secondPoint, points[i])) {
+            while (i < this.numOfPoints && this.isToLeftOrOnLine(firstPoint, secondPoint, points[i])) {
                 i++;
             }
-            while (j > 1 && !this.isToLeft(firstPoint, secondPoint, points[j])) {
+            while (j > 1 && !this.isToLeftOrOnLine(firstPoint, secondPoint, points[j])) {
                 j--;
             }
             if (i <= j) {
@@ -80,13 +80,13 @@ class RIP {
 
             let i = l + 2;
             let j = r - 1;
-            let isToLeft = this.isToLeft(randomStartPoint, randomEndPoint, points[l]);
+            let isToLeft = this.isToLeftOrOnLine(randomStartPoint, randomEndPoint, points[l]);
 
             while (i <= j) {
-                while (i < r && this.isToLeft(randomStartPoint, randomEndPoint, points[i]) === isToLeft) {
+                while (i < r && this.isToLeftOrOnLine(randomStartPoint, randomEndPoint, points[i]) === isToLeft) {
                     i++;
                 }
-                while (j > l + 1 && this.isToLeft(randomStartPoint, randomEndPoint, points[j]) !== isToLeft) {
+                while (j > l + 1 && this.isToLeftOrOnLine(randomStartPoint, randomEndPoint, points[j]) !== isToLeft) {
                     j--;
                 }
                 if (i <= j) {
@@ -107,9 +107,12 @@ class RIP {
         points[j] = tmp;
     }
 
-    isToLeft(start, end, point) {
-        //console.log(start, end ,point);
-        return (end.x - start.x) * (point.y - start.y) - (end.y - start.y) * (point.x - start.x) <= 0;
+    isToLeftOrOnLine(start, end, point) {
+        return this.isLeft(start, end, point) <= 0;
+    }
+
+    isLeft(start, end, point) {
+        return (end.x - start.x) * (point.y - start.y) - (end.y - start.y) * (point.x - start.x);
     }
 
     getRandomPointOnSegment(start, end) {
@@ -120,29 +123,22 @@ class RIP {
         );
     }
 
-  sortPoints(points) {
-      let p0 = {};
-      p0.y = Math.min.apply(null, points.map(p => p.y));
-      p0.x = Math.max.apply(null, points.filter( p=> p.y === p0.y).map(p => p.x));
-      points.sort((a,b) => angleCompare(p0, a, b));
+    sortPoints(points) {
+        let p0 = {};
+        p0.y = Math.min.apply(null, points.map(p => p.y));
+        p0.x = Math.max.apply(null, points.filter( p=> p.y === p0.y).map(p => p.x));
+        points.sort((a,b) => {
+            const isLeft = this.isLeft(a, b, p0);
+            if (isLeft === 0) {
+              return distCompare(p0, a, b);
+            };
+            return isLeft;
+        });
 
-      function angleCompare(p0, a, b) {
-          const left = isLeft(p0, a, b);
-          if (left === 0) {
-            return distCompare(p0, a, b);
-          };
-          return left;
-      }
-
-      function isLeft(p0, a, b) {
-          return (a.x - p0.x) * (b.y - p0.y) - (b.x - p0.x) * (a.y - p0.y);
-      }
-
-      function distCompare(p0, a, b) {
-          const distA = (p0.x - a.x) * (p0.x - a.x) + (p0.y - a.y) * (p0.y - a.y);
-          const distB = (p0.x - b.x) * (p0.x - b.x) + (p0.y - b.y) * (p0.y - b.y);
-          return distA - distB;
-      }
-  };
-
+        function distCompare(p0, a, b) {
+            const distA = (p0.x - a.x) * (p0.x - a.x) + (p0.y - a.y) * (p0.y - a.y);
+            const distB = (p0.x - b.x) * (p0.x - b.x) + (p0.y - b.y) * (p0.y - b.y);
+            return distA - distB;
+        }
+    }
 }
