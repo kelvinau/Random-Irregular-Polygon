@@ -130,12 +130,12 @@ class RIP {
         points.sort((a,b) => {
             const isLeft = this.isLeft(a, b, p0);
             if (isLeft === 0) {
-              return distCompare(p0, a, b);
+              return distCompare(a, b, p0);
             };
             return isLeft;
         });
 
-        function distCompare(p0, a, b) {
+        function distCompare(a, b, p0) {
             const distA = (p0.x - a.x) * (p0.x - a.x) + (p0.y - a.y) * (p0.y - a.y);
             const distB = (p0.x - b.x) * (p0.x - b.x) + (p0.y - b.y) * (p0.y - b.y);
             return distA - distB;
