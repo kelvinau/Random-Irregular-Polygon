@@ -10,6 +10,9 @@
         left: 50%;
         transform: translateX(-50%);
       }
+      line {
+        transition: opacity linear 0.2s;
+      }
     </style>
   </head>
   <body>
@@ -107,11 +110,19 @@
             return totalWaitTime;
           }, 2000);
 
+          const scaledDotData = this.state.dotData.map(({x, y, color}) => {
+            return {
+              x: xScale(x),
+              y: yScale(y),
+              color,
+            }
+          })
+
           // dots
           const dots = d3
             .select(this.svgEl.current)
             .selectAll('circle')
-            .data(this.state.dotData);
+            .data(scaledDotData);
 
           dots
             .enter()
@@ -124,8 +135,8 @@
             .merge(dots)
             .transition()
             .duration(2000)
-            .attr('cx', d => xScale(d.x))
-            .attr('cy', d => yScale(d.y))
+            .attr('cx', d => d.x)
+            .attr('cy', d => d.y)
             .attr('r', d => CIRCLE_RADIUS)
             .style('fill', d => COLORS[d.color]);
 
@@ -166,6 +177,21 @@
             .style('stroke', 'silver');
 
           lines.exit().remove();
+
+          setTimeout(() => {
+            const elem = d3.select(this.svgEl.current).selectAll('line');
+            hideShowLines(elem);
+          }, waitTime[waitTime.length - 1] + LINE_DURATION);
+
+          function hideShowLines(elem, numOfTimes = 0) {
+            if (numOfTimes === 6) {
+              return;
+            }
+            setTimeout(() => {
+              elem.style('opacity', numOfTimes % 2);
+              hideShowLines(elem, numOfTimes + 1);
+            }, 500);
+          }
         }
         clickHandler() {
           const { dotData, lineData } = getData();
