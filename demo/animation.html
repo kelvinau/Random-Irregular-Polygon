@@ -79,7 +79,7 @@
             lineData,
           };
           this.svgEl = React.createRef();
-          this.clickHandler = this.clickHandler.bind(this);
+          this.resetData = this.resetData.bind(this);
         }
         updateChart() {
           const MAX_WIDTH = this.svgEl.current.width.baseVal.value - CIRCLE_RADIUS;
@@ -181,6 +181,11 @@
           setTimeout(() => {
             const elem = d3.select(this.svgEl.current).selectAll('line');
             hideShowLines(elem);
+
+            // loop updateChart
+            setTimeout(() => {
+              this.resetData();
+            }, 6000);
           }, waitTime[waitTime.length - 1] + LINE_DURATION);
 
           function hideShowLines(elem, numOfTimes = 0) {
@@ -193,7 +198,7 @@
             }, 500);
           }
         }
-        clickHandler() {
+        resetData() {
           const { dotData, lineData } = getData();
           this.setState({
             dotData,
@@ -203,9 +208,11 @@
         render() {
           return (
             <div>
+              {/*
               <div className="generate-btn">
-                <button onClick={this.clickHandler}>Generate Chart</button>
+                <button onClick={this.resetData}>Generate Chart</button>
               </div>
+              */}
               <svg width="100%" height="100%" ref={this.svgEl} />
             </div>
           );
