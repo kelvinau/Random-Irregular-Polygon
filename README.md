@@ -16,3 +16,6 @@ const generator = new RIP({
 });
 const coords = generator.getPolygonCoord();
 ```
+
+## Reference
+The algorithm is based on the paper [Heuristics for the Generation of Random Polygons](https://kelvinau.github.io/Random-Irregular-Polygon/paper/Heuristics%20for%20the%20Generation%20of%20Random%20Polygons.pdf) by Thomas Auer & Martin Held.
