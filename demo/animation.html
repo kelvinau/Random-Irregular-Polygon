@@ -174,7 +174,8 @@
             .duration(LINE_DURATION)
             .attr('x2', d => xScale(d.x2))
             .attr('y2', d => yScale(d.y2))
-            .style('stroke', 'silver');
+            .style('stroke', 'silver')
+            .style('stroke-width', 2);
 
           lines.exit().remove();
 
