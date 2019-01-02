@@ -1,6 +1,5 @@
 <html>
   <head>
-    <script src="../src/random-irregular-polygon.js"></script>
     <style>
       body {
         margin: 0;
@@ -10,7 +9,8 @@
   <body>
     <div id="point-text"></div>
     <canvas id="polygon" width="800" height="600"></canvas>
-    <script>
+    <script type="module">
+      import RIP from '../src/random-irregular-polygon.js';
       const gen = new RIP({
         numOfPoints: 20,
         minCoordVal: 100,
