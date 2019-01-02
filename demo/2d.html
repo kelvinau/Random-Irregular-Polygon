@@ -15,6 +15,7 @@
         numOfPoints: 20,
         minCoordVal: 100,
         maxCoordVal: 500,
+        isIntCoord: true,
       });
 
       const points = gen.getPolygonCoord();
@@ -34,7 +35,7 @@
       ctx.fillStyle = 'black';
       for (let i = 0; i < points.length; i++) {
         ctx.fillText(
-            `(${points[i].x.toFixed(2)}, ${points[i].y.toFixed(2)})`,
+            `(${points[i].x}, ${points[i].y})`,
             points[i].x,
             points[i].y
         );
