@@ -14,7 +14,7 @@ export default class RIP {
   }
 
   getPolygonCoord() {
-    const points = this.space_partition(this.getRandomPoints());
+    const points = this.spacePartition(this.getRandomPoints());
     this.sortPoints(points);
     return points;
   }
@@ -42,7 +42,7 @@ export default class RIP {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  space_partition(points) {
+  spacePartition(points) {
     let firstPoint = points[0];
     let secondIndex = this.getRandomNum(1, this.numOfPoints - 1, true);
     let secondPoint = points[secondIndex];
@@ -65,12 +65,12 @@ export default class RIP {
       }
     }
     this.swapPoints(points, 1, j);
-    this.space_partion_rec(points, 0, j);
+    this.spacePartitionRec(points, 0, j);
     //console.log(points);
     return points;
   }
 
-  space_partion_rec(points, l, r) {
+  spacePartitionRec(points, l, r) {
     if (r > l + 1) {
       let rp = this.getRandomNum(l + 1, r - l - 1, true);
       let firstPoint = points[l];
@@ -97,8 +97,8 @@ export default class RIP {
         }
       }
       this.swapPoints(points, l + 1, j);
-      this.space_partion_rec(points, l, j);
-      this.space_partion_rec(points, j, r);
+      this.spacePartitionRec(points, l, j);
+      this.spacePartitionRec(points, j, r);
     }
   }
 
