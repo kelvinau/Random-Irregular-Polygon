@@ -5,7 +5,7 @@ class Point {
   }
 }
 
-export default class RIP {
+class RIP {
   constructor(opts) {
     this.numOfPoints = opts.numOfPoints;
     this.minCoordVal = opts.minCoordVal;

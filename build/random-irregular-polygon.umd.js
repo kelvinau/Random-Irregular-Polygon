@@ -4,7 +4,7 @@
   } else if (typeof exports === 'object') {
     module.exports = factory();
   } else {
-    root.Random-irregular-polygon = factory();
+    root.RIP = factory();
   }
 }(this, function() {
 class Point {
@@ -14,7 +14,7 @@ class Point {
   }
 }
 
-export default class RIP {
+class RIP {
   constructor(opts) {
     this.numOfPoints = opts.numOfPoints;
     this.minCoordVal = opts.minCoordVal;
@@ -153,5 +153,5 @@ export default class RIP {
   }
 }
 
-return Random-irregular-polygon;
+return RIP;
 }));
