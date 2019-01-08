@@ -8,12 +8,17 @@
     "url": "git+https://github.com/kelvinau/Random-Irregular-Polygon.git"
   },
   "author": {
-      "name": "Kelvin Au",
-      "url": "https://github.com/kelvinau"
+    "name": "Kelvin Au",
+    "url": "https://github.com/kelvinau"
   },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/kelvinau/Random-Irregular-Polygon/issues"
   },
-  "homepage": "https://github.com/kelvinau/Random-Irregular-Polygon#readme"
+  "homepage": "https://github.com/kelvinau/Random-Irregular-Polygon#readme",
+  "devDependencies": {
+    "gulp": "^4.0.0",
+    "gulp-rename": "^1.4.0",
+    "gulp-umd": "^2.0.0"
+  }
 }
