@@ -47,7 +47,6 @@ class RIP {
     let secondIndex = this.getRandomNum(1, this.numOfPoints - 1, true);
     let secondPoint = points[secondIndex];
     this.swapPoints(points, 1, secondIndex);
-    //console.log(points);
 
     let i = 2;
     let j = this.numOfPoints - 1;
@@ -66,7 +65,6 @@ class RIP {
     }
     this.swapPoints(points, 1, j);
     this.spacePartitionRec(points, 0, j);
-    //console.log(points);
     return points;
   }
 
