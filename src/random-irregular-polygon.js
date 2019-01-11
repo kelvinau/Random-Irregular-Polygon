@@ -20,12 +20,12 @@ class RIP {
   }
 
   getRandomPoints() {
-    let points = [];
-    let pointSet = new Set();
+    const points = [];
+    const pointSet = new Set();
     for (let i = 0; i < this.numOfPoints; ) {
-      let x = this.getRandomNum(this.minCoordVal, this.maxCoordVal, this.isIntCoord);
-      let y = this.getRandomNum(this.minCoordVal, this.maxCoordVal, this.isIntCoord);
-      let key = x + '-' + y;
+      const x = this.getRandomNum(this.minCoordVal, this.maxCoordVal, this.isIntCoord);
+      const y = this.getRandomNum(this.minCoordVal, this.maxCoordVal, this.isIntCoord);
+      const key = x + '-' + y;
       if (!pointSet.has(key)) {
         pointSet.add(key);
         points.push(new Point(x, y));
@@ -43,9 +43,9 @@ class RIP {
   }
 
   spacePartition(points) {
-    let firstPoint = points[0];
-    let secondIndex = this.getRandomNum(1, this.numOfPoints - 1, true);
-    let secondPoint = points[secondIndex];
+    const firstPoint = points[0];
+    const secondIndex = this.getRandomNum(1, this.numOfPoints - 1, true);
+    const secondPoint = points[secondIndex];
     this.swapPoints(points, 1, secondIndex);
 
     let i = 2;
@@ -70,16 +70,16 @@ class RIP {
 
   spacePartitionRec(points, l, r) {
     if (r > l + 1) {
-      let rp = this.getRandomNum(l + 1, r - l - 1, true);
-      let firstPoint = points[l];
-      let secondPoint = r === this.numOfPoints ? points[0] : points[r];
-      let randomStartPoint = this.getRandomPointOnSegment(firstPoint, secondPoint);
-      let randomEndPoint = points[rp];
+      const rp = this.getRandomNum(l + 1, r - l - 1, true);
+      const firstPoint = points[l];
+      const secondPoint = r === this.numOfPoints ? points[0] : points[r];
+      const randomStartPoint = this.getRandomPointOnSegment(firstPoint, secondPoint);
+      const randomEndPoint = points[rp];
       this.swapPoints(points, l + 1, rp);
 
       let i = l + 2;
       let j = r - 1;
-      let isToLeft = this.isToLeftOrOnLine(randomStartPoint, randomEndPoint, points[l]);
+      const isToLeft = this.isToLeftOrOnLine(randomStartPoint, randomEndPoint, points[l]);
 
       while (i <= j) {
         while (i < r && this.isToLeftOrOnLine(randomStartPoint, randomEndPoint, points[i]) === isToLeft) {
@@ -101,7 +101,7 @@ class RIP {
   }
 
   swapPoints(points, i, j) {
-    let tmp = points[i];
+    const tmp = points[i];
     points[i] = points[j];
     points[j] = tmp;
   }
@@ -115,7 +115,7 @@ class RIP {
   }
 
   getRandomPointOnSegment(start, end) {
-    let randomRatio = Math.random();
+    const randomRatio = Math.random();
     return new Point(
       start.x + (end.x - start.x) * randomRatio,
       start.y + (end.y - start.y) * randomRatio
@@ -123,7 +123,7 @@ class RIP {
   }
 
   sortPoints(points) {
-    let p0 = {};
+    const p0 = {};
     p0.y = Math.min.apply(null, points.map(p => p.y));
     p0.x = Math.max.apply(null, points.filter( p=> p.y === p0.y).map(p => p.x));
     points.sort((a,b) => {
