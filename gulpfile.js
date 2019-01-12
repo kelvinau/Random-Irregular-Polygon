@@ -1,10 +1,14 @@
 const gulp = require('gulp');
 const umd = require('gulp-umd');
 const rename = require('gulp-rename');
+const babel = require('gulp-babel');
 
 gulp.task('build', function() {
   return gulp
     .src('src/*.js')
+	.pipe(babel({
+	  presets: ['@babel/env'],
+	}))
     .pipe(
       umd({
         exports: function(file) {
