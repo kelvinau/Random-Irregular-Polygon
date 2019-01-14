@@ -29,6 +29,7 @@
       const MAX_COORD_VAL = 100;
       const CIRCLE_RADIUS = 10;
       const LINE_DURATION = 500;
+      const COLORS = ['#2176ae', '#57b8ff', '#b66d0d', '#fbb13c', '#fe6847'];
 
       function getData() {
         const generator = new RIP({
@@ -69,7 +70,7 @@
           lineData,
         };
       }
-      const COLORS = ['#2176ae', '#57b8ff', '#b66d0d', '#fbb13c', '#fe6847'];
+
       class App extends React.Component {
         constructor(props) {
           super(props);
