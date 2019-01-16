@@ -83,7 +83,7 @@
           this.svgEl = React.createRef();
           this.resetData = this.resetData.bind(this);
         }
-        updateChart() {
+        updateChart(firstTime) {
           const MAX_WIDTH = this.svgEl.current.width.baseVal.value - CIRCLE_RADIUS;
           const MAX_HEIGHT = this.svgEl.current.height.baseVal.value - CIRCLE_RADIUS;
 
@@ -189,7 +189,7 @@
             setTimeout(() => {
               this.resetData();
             }, 6000);
-          }, waitTime[waitTime.length - 1] + LINE_DURATION);
+          }, !firstTime ? waitTime[waitTime.length - 1] + LINE_DURATION : 0);
 
           function hideShowLines(elem, numOfTimes = 0) {
             if (numOfTimes === 6) {
@@ -221,7 +221,7 @@
           );
         }
         componentDidMount() {
-          setTimeout(() => this.updateChart(), 1000);
+          setTimeout(() => this.updateChart(true), 500);
         }
         componentDidUpdate() {
           this.updateChart();
